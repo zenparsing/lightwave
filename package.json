@@ -1,30 +1,32 @@
 {
   "name": "lightwave",
-  "version": "0.1.0",
-  "description": "Straylight Custom Elements",
+  "version": "0.2.0",
+  "description": "Custom elements with hooks",
   "type": "module",
   "main": "./light-element.js",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zenparsing/light-element.git"
+    "url": "https://github.com/zenparsing/lightwave.git"
   },
   "keywords": [
     "template tag",
     "html",
     "custom elements"
   ],
-  "homepage": "https://github.com/zenparsing/light-element",
+  "homepage": "https://github.com/zenparsing/lightwave",
   "dependencies": {
-    "straylight": "^0.9.0"
+    "straylight": "^0.9.1"
   },
   "devDependencies": {
-    "eslint": "^9.15.0",
-    "rollup": "^4.27.3",
+    "eslint": "^9.39.1",
+    "jsdom": "^27.2.0",
+    "moon-unit": "^0.3.3",
+    "rollup": "^4.53.2",
     "rollup-plugin-node-resolve": "^5.2.0"
   },
   "scripts": {
-    "test": "eslint *.js",
+    "test": "eslint *.js && node test",
     "build": "git clean -qdfX ./dist && rollup -c",
     "presubmitOnly": "npm test && npm run build"
   }
