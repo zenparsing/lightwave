@@ -1,6 +1,6 @@
 {
   "name": "lightwave",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Custom elements with hooks",
   "type": "module",
   "main": "./light-element.js",
@@ -16,7 +16,7 @@
   ],
   "homepage": "https://github.com/zenparsing/lightwave",
   "dependencies": {
-    "straylight": "^0.9.1"
+    "straylight": "^0.10.0"
   },
   "devDependencies": {
     "eslint": "^9.39.1",

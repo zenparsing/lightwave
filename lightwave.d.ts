@@ -33,8 +33,3 @@ export function html(
   callSite: TemplateStringsArray,
   ...values: any[]
 ): TemplateResult
-
-export function applyTemplate(
-  target: string | HTMLElement,
-  content: any
-)

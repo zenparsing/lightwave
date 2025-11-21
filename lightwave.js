@@ -1,7 +1,7 @@
 import { html, applyTemplate } from 'straylight';
 
 let $facets = Symbol('facets');
-let $render = Symbol('applyTemplate');
+let $render = Symbol('render');
 let $rendering = Symbol('rendering');
 let $renderQueued = Symbol('renderQueued');
 let $nullRender = Symbol('nullRender');
@@ -25,6 +25,9 @@ class RenderActivation {
 }
 
 function getRenderActivation() {
+  if (renderStack.length === 0) {
+    throw new Error('No current render activation');
+  }
   return renderStack.at(-1);
 }
 
@@ -137,6 +140,10 @@ export class Element extends HTMLElement {
     this[$render]();
   }
 
+  applyTemplate() {
+    this[$render]();
+  }
+
   [$render]() {
     if (this[$rendering]) {
       if (!this[$renderQueued]) {
@@ -165,4 +172,4 @@ export class Element extends HTMLElement {
   }
 }
 
-export { html, applyTemplate };
+export { html };
