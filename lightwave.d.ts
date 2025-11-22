@@ -2,6 +2,8 @@ export class Element extends HTMLElement {
   render(): any
 }
 
+export function renderElement(elem: Element): void
+
 export interface Facet {
   kind: string
   dispose(): void

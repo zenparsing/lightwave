@@ -140,10 +140,6 @@ export class Element extends HTMLElement {
     this[$render]();
   }
 
-  applyTemplate() {
-    this[$render]();
-  }
-
   [$render]() {
     if (this[$rendering]) {
       if (!this[$renderQueued]) {
@@ -170,6 +166,10 @@ export class Element extends HTMLElement {
   render() {
     return $nullRender;
   }
+}
+
+export function renderElement(elem) {
+  elem[$render]();
 }
 
 export { html };
