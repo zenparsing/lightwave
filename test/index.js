@@ -2,7 +2,14 @@ import './dom-setup.js'
 
 import * as assert from 'assert';
 import { describe, it, beforeEach } from 'moon-unit';
-import { Element, html, useElement, useEffect, useState } from '../lightwave.js';
+
+import {
+  Element,
+  html,
+  useElement,
+  useEffect,
+  useState,
+  useMemo } from '../lightwave.js';
 
 function assertHTMLEquals(actual, expected) {
   assert.deepStrictEqual(actual.split('\n').map((line) => line.trim()), expected);
@@ -86,6 +93,33 @@ describe('useEffect', () => {
     await Promise.resolve();
     assert.strictEqual(effectRan, true);
   });
+
+  it('should run cleanup function when re-rendered with new deps', async () => {
+    let cleanupRan = false;
+    let localDepValue = 0;
+
+    customElements.define('use-effect-cleanup-element', class extends Element {
+      render() {
+        useEffect([localDepValue], () => {
+          return () => {
+            cleanupRan = true;
+          };
+        });
+      }
+    });
+
+    document.body.innerHTML =
+      '<use-effect-cleanup-element></use-effect-cleanup-element>';
+    let elem = document.querySelector('use-effect-cleanup-element');
+    await Promise.resolve();
+    assert.strictEqual(cleanupRan, false);
+
+    localDepValue = 1;
+    elem.attributeChangedCallback(); // force re-render
+    await Promise.resolve();
+
+    assert.strictEqual(cleanupRan, true);
+  });
 });
 
 describe('useState', () => {
@@ -121,5 +155,72 @@ describe('useState', () => {
     elem.querySelector('button').click();
     await Promise.resolve();
     assert.strictEqual(elem.querySelector('span').innerHTML, '2');
+  });
+
+  it('should support functional initialization', () => {
+    let initCalls = 0;
+
+    customElements.define('use-state-func-element', class extends Element {
+      render() {
+        let [value] = useState(() => {
+          initCalls++;
+          return 'lazy';
+        });
+        return html`<span>${value}</span>`;
+      }
+    });
+
+    document.body.innerHTML =
+      '<use-state-func-element></use-state-func-element>';
+    let elem = document.querySelector('use-state-func-element');
+    assert.strictEqual(elem.querySelector('span').innerHTML, 'lazy');
+    assert.strictEqual(initCalls, 1);
+
+    elem.attributeChangedCallback(); // force re-render
+    assert.strictEqual(initCalls, 1);
+  });
+});
+
+describe('useMemo', () => {
+  let computeCalls = 0;
+  let depValue = 0;
+
+  beforeEach(() => {
+    computeCalls = 0;
+    depValue = 0;
+  });
+
+  customElements.define('use-memo-element', class extends Element {
+    render() {
+      let value = useMemo([depValue], () => {
+        computeCalls++;
+        return `computed-${depValue}`;
+      });
+      return html`<span>${value}</span>`;
+    }
+  });
+
+  it('should compute the initial value', () => {
+    document.body.innerHTML = '<use-memo-element></use-memo-element>';
+    let elem = document.querySelector('use-memo-element');
+    assert.strictEqual(elem.querySelector('span').innerHTML, 'computed-0');
+    assert.strictEqual(computeCalls, 1);
+  });
+
+  it('should not recompute if deps are equal', () => {
+    document.body.innerHTML = '<use-memo-element></use-memo-element>';
+    let elem = document.querySelector('use-memo-element');
+    elem.attributeChangedCallback();
+    assert.strictEqual(elem.querySelector('span').innerHTML, 'computed-0');
+    assert.strictEqual(computeCalls, 1);
+  });
+
+  it('should recompute if deps change', () => {
+    document.body.innerHTML = '<use-memo-element></use-memo-element>';
+    let elem = document.querySelector('use-memo-element');
+    depValue = 1;
+    elem.attributeChangedCallback();
+    assert.strictEqual(elem.querySelector('span').innerHTML, 'computed-1');
+    assert.strictEqual(computeCalls, 2);
   });
 });
