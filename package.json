@@ -1,9 +1,9 @@
 {
   "name": "lightwave",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Custom elements with hooks",
   "type": "module",
-  "main": "./light-element.js",
+  "main": "./lightwave.js",
   "license": "MIT",
   "repository": {
     "type": "git",
