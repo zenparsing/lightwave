@@ -1,6 +1,6 @@
 {
   "name": "lightwave",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Custom elements with hooks",
   "type": "module",
   "main": "./lightwave.js",
@@ -16,13 +16,13 @@
   ],
   "homepage": "https://github.com/zenparsing/lightwave",
   "dependencies": {
-    "straylight": "^0.10.0"
+    "straylight": "^0.10.1"
   },
   "devDependencies": {
-    "eslint": "^9.39.1",
-    "jsdom": "^27.2.0",
-    "moon-unit": "^0.3.3",
-    "rollup": "^4.53.2",
+    "eslint": "^9.39.3",
+    "jsdom": "^28.1.0",
+    "moon-unit": "^0.3.4",
+    "rollup": "^4.59.0",
     "rollup-plugin-node-resolve": "^5.2.0"
   },
   "scripts": {
