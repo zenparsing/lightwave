@@ -1,6 +1,6 @@
 {
   "name": "lightwave",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Custom elements with hooks",
   "type": "module",
   "main": "./lightwave.js",

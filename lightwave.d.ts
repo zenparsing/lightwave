@@ -1,5 +1,16 @@
+interface TemplateResult {}
+
+export type TemplateValue =
+  string |
+  number |
+  boolean |
+  null |
+  undefined |
+  TemplateResult |
+  Iterable<TemplateValue>;
+
 export class Element extends HTMLElement {
-  render(): any
+  render(): TemplateValue
 }
 
 export function renderElement(elem: Element): void
@@ -28,8 +39,6 @@ export function useMemo<T>(
   deps: any[],
   init: () => T
 ): T
-
-interface TemplateResult {}
 
 export function html(
   callSite: TemplateStringsArray,
