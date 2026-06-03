@@ -15,6 +15,11 @@ export class Element extends HTMLElement {
 
 export function renderElement(elem: Element): void
 
+export function defineElement(
+  name: string,
+  render: () => TemplateValue
+): typeof Element
+
 export interface Facet {
   kind: string
   dispose(): void

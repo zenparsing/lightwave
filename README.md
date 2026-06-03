@@ -69,3 +69,31 @@ Returns the computed value. It only re-computes when the `deps` change.
 ### `useElement()`
 
 Returns the custom element instance currently being rendered.
+
+## Utilities
+
+### `defineElement(name, render)`
+
+- **`name`**: The tag name of the custom element (must contain a hyphen).
+- **`render`**: A function that returns a template using the `html` tag.
+
+A helper function to define custom elements without manually creating a class. It registers the element with the browser and returns the created class constructor.
+
+```javascript
+import { defineElement, html, useState } from 'lightwave';
+
+defineElement('my-counter', () => {
+  const [count, setCount] = useState(0);
+  return html`
+    <button onclick=${() => setCount(count + 1)}>
+      Count: ${count}
+    </button>
+  `;
+});
+```
+
+### `renderElement(elem)`
+
+- **`elem`**: An instance of `Element`.
+
+Manually triggers an immediate re-render of the specified custom element.

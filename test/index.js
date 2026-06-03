@@ -9,7 +9,9 @@ import {
   useElement,
   useEffect,
   useState,
-  useMemo } from '../lightwave.js';
+  useMemo,
+  defineElement,
+  renderElement } from '../lightwave.js';
 
 function assertHTMLEquals(actual, expected) {
   assert.deepStrictEqual(actual.split('\n').map((line) => line.trim()), expected);
@@ -224,3 +226,45 @@ describe('useMemo', () => {
     assert.strictEqual(computeCalls, 2);
   });
 });
+
+describe('defineElement', () => {
+  it('should define a custom element and render it', () => {
+    const CustomElement = defineElement('defined-element', () => {
+      return html`
+        <div>Defined!</div>
+      `;
+    });
+
+    document.body.innerHTML = '<defined-element></defined-element>';
+    const elem = document.body.querySelector('defined-element');
+    assertHTMLEquals(document.body.innerHTML, [
+      '<defined-element>',
+      '<div>Defined!</div>',
+      '</defined-element>'
+    ]);
+
+    assert.ok(elem instanceof CustomElement);
+  });
+});
+
+describe('renderElement', () => {
+  it('should force-render the element', () => {
+    let renders = 0;
+    customElements.define('render-element-test', class extends Element {
+      render() {
+        renders++;
+        return html`
+          <div>renders: ${renders}</div>
+        `;
+      }
+    });
+
+    document.body.innerHTML = '<render-element-test></render-element-test>';
+    const elem = document.body.querySelector('render-element-test');
+    assert.strictEqual(renders, 1);
+
+    renderElement(elem);
+    assert.strictEqual(renders, 2);
+  });
+});
+

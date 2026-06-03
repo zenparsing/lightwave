@@ -172,4 +172,16 @@ export function renderElement(elem) {
   elem[$render]();
 }
 
+export function defineElement(name, render) {
+  return class extends Element {
+    render() {
+      return render();
+    }
+
+    static {
+      customElements.define(name, this);
+    }
+  };
+}
+
 export { html };
